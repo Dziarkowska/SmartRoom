@@ -71,6 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_above="@+id/roomID_spinner"
+            android:layout_marginBottom="10dp"
             android:text="Select RoomID" />
 
 

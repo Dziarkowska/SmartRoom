@@ -1,13 +1,16 @@
 package com.example.smartroom;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class RoomKeyActivity extends AppCompatActivity {
 
@@ -31,12 +34,13 @@ public class RoomKeyActivity extends AppCompatActivity {
         room_id_spinner = findViewById(R.id.roomID_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(RoomKeyActivity.this,
                 android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.RoomIDs));
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.spinner_style);
         room_id_spinner.setAdapter(adapter);
 
 
 
     }
+
 
     public void openGuestScreenActivity(){
         Intent intent = new Intent(this, GuestScreenActivity.class);
