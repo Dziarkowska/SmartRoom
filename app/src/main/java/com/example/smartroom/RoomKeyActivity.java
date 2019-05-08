@@ -7,12 +7,14 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Spinner;
 
 public class RoomKeyActivity extends AppCompatActivity {
 
     private Button go_btn;
     private AutoCompleteTextView roomID_list;
-    private String[] rooms ={"room1"};
+    //private String[] rooms ={"room1"};
+    private Spinner room_id_spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +28,14 @@ public class RoomKeyActivity extends AppCompatActivity {
             }
         });
 
-        roomID_list = findViewById(R.id.autoCompleteTextView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_item,rooms);
-        roomID_list.setAdapter(adapter);
-        roomID_list.setThreshold(1);
+        room_id_spinner = findViewById(R.id.roomID_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(RoomKeyActivity.this,
+                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.RoomIDs));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        room_id_spinner.setAdapter(adapter);
+
+
+
     }
 
     public void openGuestScreenActivity(){

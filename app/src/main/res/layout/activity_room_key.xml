@@ -43,16 +43,16 @@
             android:text="GO" />
 
 
-        <AutoCompleteTextView
-            android:id="@+id/autoCompleteTextView"
+        <Spinner
+            android:id="@+id/roomID_spinner"
             android:layout_width="240dp"
-            android:layout_height="wrap_content"
-            android:hint="RoomID"
-            android:backgroundTint="@android:color/background_light"
+            android:layout_height="40dp"
+            android:layout_above="@+id/room_pswd"
             android:layout_centerInParent="true"
-            android:textSize="20sp"
-            android:layout_above="@+id/room_pswd"/>
-
+            android:layout_marginBottom="10dp"
+            android:dropDownWidth="match_parent"
+            android:dropDownSelector="@android:color/background_light"
+            android:prompt="@string/string" />
 
 
         <TextView
@@ -64,6 +64,14 @@
             android:layout_marginBottom="16dp"
             android:text="Created by EiT students"
             android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_above="@+id/roomID_spinner"
+            android:text="Select RoomID" />
 
 
     </RelativeLayout>

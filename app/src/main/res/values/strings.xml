@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">SmartRoom</string>
     <string name="string">skip</string>
+
+    <string-array name="RoomIDs">
+        <item>Room1</item>
+        <item>Room2</item>
+    </string-array>
+
 </resources>
