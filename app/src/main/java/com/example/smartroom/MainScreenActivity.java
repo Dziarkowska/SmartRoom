@@ -8,10 +8,15 @@ import android.widget.Button;
 
 public class MainScreenActivity extends AppCompatActivity {
 
+
+    private Button vote_btn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+        vote_btn = findViewById(R.id.vote_btn);
+        vote_btn.getBackground().setAlpha(128);
     }
 
 }

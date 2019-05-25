@@ -29,6 +29,8 @@ public class FirstWindow extends AppCompatActivity {
                 openRoomKeyActivity();
             }
         });
+        button_guest.getBackground().setAlpha(128);
+        button_adm.getBackground().setAlpha(128);
 
     }
 

@@ -30,7 +30,7 @@ public class RoomKeyActivity extends AppCompatActivity {
                 openGuestScreenActivity();
             }
         });
-
+        go_btn.getBackground().setAlpha(128);
         room_id_spinner = findViewById(R.id.roomID_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(RoomKeyActivity.this,
                 android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.RoomIDs));
