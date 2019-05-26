@@ -153,8 +153,6 @@
                     android:id="@+id/table_row4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
                     android:background="@drawable/roundedline_btn">
 
                     <SeekBar
