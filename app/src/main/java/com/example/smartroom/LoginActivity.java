@@ -53,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                 openMainScreenActivity();
             }
         });
+        button.getBackground().setAlpha(128);
 
     }
 

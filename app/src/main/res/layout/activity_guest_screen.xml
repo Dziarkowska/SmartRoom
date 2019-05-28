@@ -63,7 +63,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="30dp"
                 android:background="@drawable/rounded_btn"
                 android:text="vote"/>
 
@@ -71,30 +71,30 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_vertical">
+                android:layout_gravity="center">
 
 
                 <TableRow
                     android:id="@+id/table_row1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center_vertical">
 
 
                     <Button
                         android:id="@+id/temp_in_btn"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="200dp"
                         android:layout_weight="1"
                         android:text="Temp inside"
-                        android:background="@android:color/transparent"/>
+                        android:background="@drawable/roundedline_btn"/>
 
                     <Button
                         android:id="@+id/temp_out_btn"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="200dp"
                         android:layout_weight="1"
-                        android:background="@android:color/transparent"
+                        android:background="@drawable/roundedline_btn"
                         android:text="Temp outside"/>
 
                 </TableRow>
@@ -108,18 +108,18 @@
 
                     <Button
                         android:id="@+id/AC_btn"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="200dp"
                         android:layout_weight="1"
                         android:text="AC on/off"
-                        android:background="@android:color/transparent"/>
+                        android:background="@drawable/roundedline_btn"/>
 
                     <Button
                         android:id="@+id/smog_btn"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="200dp"
                         android:layout_weight="1"
-                        android:background="@android:color/transparent"
+                        android:background="@drawable/roundedline_btn"
                         android:text="pollution level"/>
 
                 </TableRow>
@@ -132,18 +132,18 @@
 
                     <Button
                         android:id="@+id/people_num_btn"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="200dp"
                         android:layout_weight="1"
                         android:text="20"
-                        android:background="@android:color/transparent"/>
+                        android:background="@drawable/roundedline_btn"/>
 
                     <Button
                         android:id="@+id/weather_btn"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="200dp"
                         android:layout_weight="1"
-                        android:background="@android:color/transparent"
+                        android:background="@drawable/roundedline_btn"
                         android:text="sunny"/>
 
                 </TableRow>
@@ -152,9 +152,6 @@
 
         </LinearLayout>
 
-
-
-
-
     </RelativeLayout>
+
 </ScrollView>
