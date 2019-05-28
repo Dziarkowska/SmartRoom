@@ -3,6 +3,7 @@ package com.example.smartroom;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +28,28 @@ public class LoginActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EditText loginEt = (EditText) findViewById(R.id.login);
+                String login = loginEt.getEditableText().toString();
+                String url = "http://ec2-35-156-20-198.eu-central-1.compute.amazonaws.com:6969/app-connection-core/loginuser/ff";
+
+                Log.w("Login: ", login);
+
+
+                EditText passwordEt = (EditText) findViewById(R.id.password);
+                String password = passwordEt.getEditableText().toString();
+
+                Log.w("Password: ", password);
+
+                String jsonString = "{" + "login: " + login + ", " + "password: " + password + "}";
+
+                Client client = ClientBuilder.newClient();
+                WebTarget target = client.target(url);
+                Invocation.Builder request = target.request();
+
+                Response response = request.post(Entity.entity(jsonString, MediaType.APPLICATION_JSON_TYPE));
+
+                Log.w("Response: ", Integer.toString(response.getStatus()));
+
                 openMainScreenActivity();
             }
         });
@@ -34,20 +57,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onClick(View view){
-        EditText loginEt = (EditText) findViewById(R.id.login);
-        String login = loginEt.getEditableText().toString();
-        String url = "http://ec2-35-156-20-198.eu-central-1.compute.amazonaws.com:6969/app-connection-core/loginuser/ff";
 
-        EditText passwordEt = (EditText) findViewById(R.id.password);
-        String password = loginEt.getEditableText().toString();
-
-        String jsonString = "{" + "login: " + login + ", " + "password: " + password + "}";
-
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(url);
-        Invocation.Builder request = target.request();
-
-        Response response = request.post(Entity.entity(jsonString, MediaType.APPLICATION_JSON_TYPE));
 
     }
 
