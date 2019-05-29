@@ -149,30 +149,6 @@
 
                 </TableRow>
 
-                <TableRow
-                    android:id="@+id/table_row4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/roundedline_btn">
-
-                    <SeekBar
-                        android:id="@+id/seek_bar_brightness"
-                        android:layout_width="0dp"
-                        android:layout_height="100dp"
-                        android:layout_weight="3"
-                        android:layout_gravity="center"/>
-
-                    <TextView
-                        android:id="@+id/progress_txt"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:maxLines="10"
-                        android:layout_gravity="center"
-                        android:text="Brightness \n 0%"
-                        android:textAlignment="center"/>
-
-                </TableRow>
 
             </TableLayout>
 

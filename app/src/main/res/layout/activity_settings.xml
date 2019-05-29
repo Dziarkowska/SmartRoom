@@ -1,9 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".SettingsActivity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        tools:context=".SettingsActivity"
+        android:background="@drawable/login_background">
+
+
+        <TextView
+            android:id="@+id/settings_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Settings"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="40dp"
+            android:textSize="26sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@+id/settings_txt"
+            android:layout_centerInParent="true">
+
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center">
+
+
+                <TableRow
+                    android:id="@+id/table2_row1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="40dp"
+                    android:paddingTop="4dp">
+
+                    <EditText
+                        android:id="@+id/set_temp_txt"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:text="TEMP IN CELSIUS"
+                        android:layout_weight="4"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="20sp"/>
+
+                    <Button
+                        android:id="@+id/set_temp_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_btn"
+                        android:text="SET"
+                        android:textSize="12sp"
+                        android:textAlignment="center"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/table2_row2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="40dp">
+
+                    <Switch
+                        android:id="@+id/AC_switch"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:text=" AC OFF/ON"
+                        android:textSize="20sp"
+                        android:textColor="@android:color/darker_gray"/>
+
+                </TableRow>
+
+
+                <TableRow
+                    android:id="@+id/table2_row3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="40dp">
+
+                    <Switch
+                        android:id="@+id/windows_switch"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:text=" WINDOWS CLOSED/OPENED"
+                        android:textSize="20sp"
+                        android:textColor="@android:color/secondary_text_dark_nodisable"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/table2_row4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="40dp">
+
+                    <SeekBar
+                        android:id="@+id/seek_bar2_brightness"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="3"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/progress2_txt"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:maxLines="10"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"
+                        android:text="Brightness \n 0%"
+                        android:textAlignment="center"/>
+
+                </TableRow>
+
+
+
+            </TableLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>
