@@ -45,12 +45,24 @@ public class MainScreenActivity extends AppCompatActivity {
             }
         });
 
+        vote_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openVoteActivity();
+            }
+        });
+
 
 
     }
 
     public void openSettingsActivity(){
         Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    public void openVoteActivity(){
+        Intent intent = new Intent(this,VoteActivity.class);
         startActivity(intent);
     }
 

@@ -43,6 +43,7 @@
             android:layout_gravity="center"
             android:background="@drawable/rounded_btn"
             android:layout_marginTop="50dp"
+            android:background="@drawable/rounded_btn"
             android:text="Login" />
 
 

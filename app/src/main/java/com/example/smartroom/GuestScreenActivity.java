@@ -1,7 +1,9 @@
 package com.example.smartroom;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 
@@ -28,5 +30,18 @@ public class GuestScreenActivity extends AppCompatActivity {
         smog_btn.getBackground().setAlpha(20);
         people_num_btn.getBackground().setAlpha(20);
         weather_btn.getBackground().setAlpha(20);
+
+
+        vote_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openVoteActivity();
+            }
+        });
+    }
+
+    public void openVoteActivity(){
+        Intent intent = new Intent(this,VoteActivity.class);
+        startActivity(intent);
     }
 }
