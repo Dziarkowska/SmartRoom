@@ -24,21 +24,23 @@ public class RoomKeyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_key);
         go_btn = findViewById(R.id.go_btn);
+        room_id_spinner = findViewById(R.id.roomID_spinner);
+        go_btn.getBackground().setAlpha(128);
+
         go_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //tutaj logika do logowania do pokoju
+
                 openGuestScreenActivity();
             }
         });
-        go_btn.getBackground().setAlpha(128);
-        room_id_spinner = findViewById(R.id.roomID_spinner);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(RoomKeyActivity.this,
                 android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.RoomIDs));
         adapter.setDropDownViewResource(R.layout.spinner_style);
         room_id_spinner.setAdapter(adapter);
-
-
-
     }
 
 
