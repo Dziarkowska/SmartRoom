@@ -17,7 +17,7 @@
 
 
         <Button
-            android:id="@+id/menu_ic"
+            android:id="@+id/menu_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableBottom="@drawable/ic_menu"
@@ -35,6 +35,16 @@
             android:text="SmartRoom"
             android:layout_marginTop="10dp"
             android:textSize="36sp"/>
+
+        <Button
+            android:id="@+id/settings_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableBottom="@drawable/ic_settings"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/transparent"/>
 
         <TextView
             android:id="@+id/admin_name_txt"

@@ -12,7 +12,7 @@ import android.widget.TextView;
 public class MainScreenActivity extends AppCompatActivity {
 
 
-    private Button vote_btn, temp_in_btn, temp_out_btn, AC_btn, smog_btn, people_num_btn, weather_btn;
+    private Button vote_btn, temp_in_btn, temp_out_btn, AC_btn, smog_btn, people_num_btn, weather_btn, menu_btn, settings_btn;
     private TableRow tablerow_btn;
 
 
@@ -27,6 +27,9 @@ public class MainScreenActivity extends AppCompatActivity {
         smog_btn = findViewById(R.id.smog_btn);
         people_num_btn = findViewById(R.id.people_num_btn);
         weather_btn = findViewById(R.id.weather_btn);
+        menu_btn = findViewById(R.id.menu_btn);
+        settings_btn = findViewById(R.id.settings_btn);
+
         vote_btn.getBackground().setAlpha(128);
         temp_in_btn.getBackground().setAlpha(20);
         temp_out_btn.getBackground().setAlpha(20);
@@ -35,8 +38,20 @@ public class MainScreenActivity extends AppCompatActivity {
         people_num_btn.getBackground().setAlpha(20);
         weather_btn.getBackground().setAlpha(20);
 
+        settings_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSettingsActivity();
+            }
+        });
+
 
 
     }
 
-}
+    public void openSettingsActivity(){
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+ }
