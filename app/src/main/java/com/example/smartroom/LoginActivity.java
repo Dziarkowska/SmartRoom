@@ -34,33 +34,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                EditText loginEt = findViewById(R.id.login);
-                String login = loginEt.getEditableText().toString();
-                Log.w("Login ", login);
-
-                EditText passwordEt = findViewById(R.id.password);
-                String password = passwordEt.getEditableText().toString();
-                Log.w("Password ", password);
-
-                String jsonString = "{" + "user: " + login + ", " + "password: " + password + "}";
-                WebTarget target = ClientBuilder.newClient().target(SERVER_URL);
-
-                try
-                {
-                    if(validateResponse(target, jsonString))
-                        openMainScreenActivity();
-                }
-                catch (Exception exception)
-                {
-                    Log.w("O kurwa wyjątek xD: ", exception);
-                }
+                onAdminLoginAttempt();
             }
         });
         button.getBackground().setAlpha(128);
-    }
-
-    public void onClick(View view)
-    {
     }
 
     public void openMainScreenActivity()
@@ -69,7 +46,34 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private boolean validateResponse(WebTarget webTarget, String jsonString) throws InterruptedException, ExecutionException
+    private void onAdminLoginAttempt()
+    {
+        EditText loginEt = findViewById(R.id.login);
+        String login = loginEt.getEditableText().toString();
+        Log.w("Login ", login);
+
+        EditText passwordEt = findViewById(R.id.password);
+        String password = passwordEt.getEditableText().toString();
+        Log.w("Password ", password);
+
+        String jsonString = "{" + "user: " + login + ", " + "password: " + password + "}";
+        WebTarget target = ClientBuilder.newClient().target(SERVER_URL);
+
+        try
+        {
+            if(validateResponse(target, jsonString))
+            {
+                openMainScreenActivity();   //TODO: maybe choose room before?
+            }
+        }
+        catch (Exception exception)
+        {
+            Log.w("O kurwa wyjątek xD: ", exception);
+        }
+    }
+
+    private boolean validateResponse(WebTarget webTarget, String jsonString)
+        throws InterruptedException, ExecutionException
     {
         Future<Response> response = webTarget.request().async().post(Entity.json(jsonString));
         Object status = response.get().getStatus();
