@@ -18,20 +18,22 @@ import javax.ws.rs.core.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private Button button;
-    private String SERVER_URL = "http://ec2-35-156-20-198.eu-central-1.compute.amazonaws.com:6969/app-connection-core/loginuser";
-    private Integer SUCCESSFUL_LOGIN = 200;
+    private  final String SERVER_URL = "http://ec2-35-156-20-198.eu-central-1.compute.amazonaws.com:6969/app-connection-core/loginuser";
+    private  final Integer SUCCESSFUL_LOGIN = 200;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        button = findViewById(R.id.login_btn);
+        Button button = findViewById(R.id.login_btn);
         button.getBackground().setAlpha(128);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 EditText loginEt = findViewById(R.id.login);
                 String login = loginEt.getEditableText().toString();
                 Log.w("Login ", login);
@@ -50,19 +52,19 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 catch (Exception exception)
                 {
-                    Log.w("O kurwa, wyjątek xD: ", exception);
+                    Log.w("O kurwa wyjątek xD: ", exception);
                 }
             }
         });
         button.getBackground().setAlpha(128);
-
     }
 
-    public void onClick(View view){
-
+    public void onClick(View view)
+    {
     }
 
-    public void openMainScreenActivity(){
+    public void openMainScreenActivity()
+    {
         Intent intent = new Intent(this, MainScreenActivity.class);
         startActivity(intent);
     }
@@ -73,11 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         Object status = response.get().getStatus();
         response.get().close();
         Log.w("Response ", status.toString());
-        if(status.equals(SUCCESSFUL_LOGIN))
-        {
-            return true;
-        }
-        return false;
+        return status.equals(SUCCESSFUL_LOGIN);
     }
 }
 
