@@ -18,17 +18,17 @@ import javax.ws.rs.core.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private  final String SERVER_URL = "http://ec2-35-156-20-198.eu-central-1.compute.amazonaws.com:6969/app-connection-core/loginuser";
-    private  final Integer SUCCESSFUL_LOGIN = 200;
+    private final String SERVER_URL = "http://ec2-35-156-20-198.eu-central-1.compute.amazonaws.com:6969/app-connection-core/loginuser";
+    private final Integer SUCCESSFUL_LOGIN = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         Button button = findViewById(R.id.login_btn);
         button.getBackground().setAlpha(128);
-
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -54,9 +54,8 @@ public class LoginActivity extends AppCompatActivity {
 
         EditText passwordEt = findViewById(R.id.password);
         String password = passwordEt.getEditableText().toString();
-        Log.d("Password ", password);
 
-        String jsonString = "{" + "user: " + login + ", " + "password: " + password + "}";
+        String jsonString = "{" + "\"user\": \"" + login + "\", \"password\": \"" + password + "\"}";
         WebTarget target = ClientBuilder.newClient().target(SERVER_URL);
 
         try
@@ -78,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         Future<Response> response = webTarget.request().async().post(Entity.json(jsonString));
         Object status = response.get().getStatus();
         response.get().close();
-        Log.d("Response ", status.toString());
+        Log.d("Admin login status ", status.toString());
         return status.equals(SUCCESSFUL_LOGIN);
     }
 }
