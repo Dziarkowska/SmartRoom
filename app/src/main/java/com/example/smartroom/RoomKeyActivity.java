@@ -19,9 +19,6 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -90,8 +87,8 @@ public class RoomKeyActivity extends AppCompatActivity {
             Response response = getResponse(target, jsonString);
             if(validateResponse(response))
             {
-                DataBlock data = convertJsonToDataBlock(response);
-                openGuestScreenActivity(data);
+                openGuestScreenActivity(convertJsonToDataBlock(response));
+                response.close();
             }
         }
         catch (Exception exception)
@@ -118,9 +115,8 @@ public class RoomKeyActivity extends AppCompatActivity {
         DataBlock dataBlock;
         try
         {
-            InputStream targetStream = new ByteArrayInputStream(response.toString().getBytes());
             String stringJson = response.readEntity(String.class);
-            Log.w("########################################", stringJson);
+            Log.d("Received json ", stringJson);
             JsonElement elem = new JsonParser().parse(stringJson);
             Gson gson  = new GsonBuilder().create();
             dataBlock = gson.fromJson(elem, DataBlock.class);

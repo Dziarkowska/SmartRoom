@@ -58,8 +58,9 @@ public class DataBlock implements Serializable {
         this.light_in = light_in;
     }
 
-    public String getClimeOn() {
-        return isClimeOn;
+    public String getClimeOn()
+    {
+        return isClimeOn.equals("0") ? "OFF" : "ON";
     }
 
     public String getWindowOpen() {
