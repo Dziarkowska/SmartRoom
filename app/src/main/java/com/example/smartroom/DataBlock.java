@@ -10,9 +10,8 @@ public class DataBlock implements Serializable {
     private String temp_in;
     private String temp_out;
     private String light_in;
-    private String red;
-    private String green;
-    private String blue;
+    private String isClimeOn;
+    private String isWindowOpen;
     private String air_qua_in;
     private String air_qua_out;
     private String sound_detected;
@@ -59,29 +58,14 @@ public class DataBlock implements Serializable {
         this.light_in = light_in;
     }
 
-    public String getRed() {
-        return red;
+    public String getClimeOn() {
+        return isClimeOn;
     }
 
-    public void setRed(String red) {
-        this.red = red;
+    public String getWindowOpen() {
+        return isWindowOpen;
     }
 
-    public String getGreen() {
-        return green;
-    }
-
-    public void setGreen(String green) {
-        this.green = green;
-    }
-
-    public String getBlue() {
-        return blue;
-    }
-
-    public void setBlue(String blue) {
-        this.blue = blue;
-    }
 
     public String getAirQuaIn() {
         return air_qua_in;

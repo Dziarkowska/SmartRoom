@@ -36,7 +36,7 @@ public class GuestScreenActivity extends AppCompatActivity {
         people_num_btn.setText("PEOPLE INSIDE:\n" + data.getPeopleInside());
         temp_in_btn.setText("TEMPERATURE INSIDE:\n" + data.getTempIn());
         temp_out_btn.setText("TEMPERATURE OUTSIDE:\n" + data.getTempOut());
-        AC_btn.setText("AC LEVEL:\n");
+        AC_btn.setText("AC LEVEL:\n" + data.getClimeOn());
 
         vote_btn.setOnClickListener(new View.OnClickListener() {
             @Override
