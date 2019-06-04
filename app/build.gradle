@@ -42,4 +42,6 @@ dependencies {
             }
     implementation 'javax.xml.stream:com.springsource.javax.xml.stream:1.0.1'
     implementation 'javax.xml.bind:activation:1.0.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'org.apache:apache:21'
 }

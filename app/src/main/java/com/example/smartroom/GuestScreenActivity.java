@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 
+
 public class GuestScreenActivity extends AppCompatActivity {
 
     private Button vote_btn, temp_in_btn, temp_out_btn, AC_btn, smog_btn, people_num_btn, weather_btn;
@@ -31,6 +32,11 @@ public class GuestScreenActivity extends AppCompatActivity {
         people_num_btn.getBackground().setAlpha(20);
         weather_btn.getBackground().setAlpha(20);
 
+        DataBlock data = (DataBlock) getIntent().getSerializableExtra("data");
+        people_num_btn.setText("PEOPLE INSIDE:\n" + data.getPeopleInside());
+        temp_in_btn.setText("TEMPERATURE INSIDE:\n" + data.getTempIn());
+        temp_out_btn.setText("TEMPERATURE OUTSIDE:\n" + data.getTempOut());
+        AC_btn.setText("AC LEVEL:\n");
 
         vote_btn.setOnClickListener(new View.OnClickListener() {
             @Override

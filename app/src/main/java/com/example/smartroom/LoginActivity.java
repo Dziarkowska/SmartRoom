@@ -75,7 +75,8 @@ public class LoginActivity extends AppCompatActivity {
         throws InterruptedException, ExecutionException
     {
         Future<Response> response = webTarget.request().async().post(Entity.json(jsonString));
-        Object status = response.get().getStatus();
+        Integer status = response.get().getStatus();
+        Log.w("########################################", response.get().toString());
         response.get().close();
         Log.d("Admin login status ", status.toString());
         return status.equals(SUCCESSFUL_LOGIN);

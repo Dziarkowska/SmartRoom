@@ -12,6 +12,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -54,9 +64,10 @@ public class RoomKeyActivity extends AppCompatActivity {
         room_id_spinner.setAdapter(adapter);
     }
 
-    public void openGuestScreenActivity()
+    public void openGuestScreenActivity(DataBlock data)
     {
         Intent intent = new Intent(this, GuestScreenActivity.class);
+        intent.putExtra("data", data);
         startActivity(intent);
     }
 
@@ -76,9 +87,11 @@ public class RoomKeyActivity extends AppCompatActivity {
 
         try
         {
-            if(validateResponse(target, jsonString))
+            Response response = getResponse(target, jsonString);
+            if(validateResponse(response))
             {
-                openGuestScreenActivity();
+                DataBlock data = convertJsonToDataBlock(response);
+                openGuestScreenActivity(data);
             }
         }
         catch (Exception exception)
@@ -87,13 +100,36 @@ public class RoomKeyActivity extends AppCompatActivity {
         }
     }
 
-    private boolean validateResponse(WebTarget webTarget, String jsonString)
+    private boolean validateResponse(Response response)
+    {
+        Integer status = response.getStatus();
+        Log.d("Room login status ", status.toString());
+        return status.equals(SUCCESSFUL_LOGIN);
+    }
+
+    private Response getResponse(WebTarget webTarget, String jsonString)
         throws InterruptedException, ExecutionException
     {
         Future<Response> response = webTarget.request().async().post(Entity.json(jsonString));
-        Object status = response.get().getStatus();
-        response.get().close();
-        Log.d("Room login status ", status.toString());
-        return status.equals(SUCCESSFUL_LOGIN);
+        return response.get();
+    }
+    private DataBlock convertJsonToDataBlock(Response response)
+    {
+        DataBlock dataBlock;
+        try
+        {
+            InputStream targetStream = new ByteArrayInputStream(response.toString().getBytes());
+            String stringJson = response.readEntity(String.class);
+            Log.w("########################################", stringJson);
+            JsonElement elem = new JsonParser().parse(stringJson);
+            Gson gson  = new GsonBuilder().create();
+            dataBlock = gson.fromJson(elem, DataBlock.class);
+        }
+        catch (JsonIOException | JsonSyntaxException exception)
+        {
+            Log.e("Exception ", exception.toString());
+            return new DataBlock();
+        }
+        return dataBlock;
     }
 }
