@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -18,11 +17,8 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
@@ -36,8 +32,9 @@ public class RoomKeyForAdmin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_key_for_admin);
 
-        final ArrayList<String> roomIds = getRoomList();
-        setRoomSpinner(roomIds.size());
+        Spinner roomSpinner = findViewById(R.id.roomID_spinner);
+        final ArrayList<String> roomIds = RoomKeyHelper.getRoomList();
+        RoomKeyHelper.setRoomSpinner(this, roomSpinner, roomIds.size());
 
         Button go_btn = findViewById(R.id.go_btn);
         go_btn.getBackground().setAlpha(128);
@@ -48,7 +45,6 @@ public class RoomKeyForAdmin extends AppCompatActivity {
                 onAdminChooseRoomAttempt(roomIds);
             }
         });
-
     }
 
     private void onAdminChooseRoomAttempt(ArrayList<String> rooms)
@@ -67,8 +63,8 @@ public class RoomKeyForAdmin extends AppCompatActivity {
 
         try
         {
-            Response response = getResponse(target, jsonString);
-            if(validateResponse(response))
+            Response response = RoomKeyHelper.getResponse(target, jsonString);
+            if(RoomKeyHelper.validateResponse(response))
             {
                 openMainScreenActivity(convertJsonToDataBlock(response));
                 response.close();
@@ -76,7 +72,7 @@ public class RoomKeyForAdmin extends AppCompatActivity {
         }
         catch (Exception exception)
         {
-            Log.w("O kurwa wyjątek xD: ", exception);
+            Log.w("Exception ", exception);
         }
     }
 
@@ -86,20 +82,6 @@ public class RoomKeyForAdmin extends AppCompatActivity {
         intent.putExtra("login", getIntent().getSerializableExtra("login"));
         intent.putExtra("data", data);
         startActivity(intent);
-    }
-
-    private boolean validateResponse(Response response)
-    {
-        Integer status = response.getStatus();
-        Log.d("Room login status ", status.toString());
-        return status.equals(DataConstants.SUCCESSFUL_LOGIN);
-    }
-
-    private Response getResponse(WebTarget webTarget, String jsonString)
-        throws InterruptedException, ExecutionException
-    {
-        Future<Response> response = webTarget.request().async().post(Entity.json(jsonString));
-        return response.get();
     }
 
     private DataBlock convertJsonToDataBlock(Response response)
@@ -121,37 +103,4 @@ public class RoomKeyForAdmin extends AppCompatActivity {
         return dataBlock;
     }
 
-    private ArrayList<String> getRoomList()
-    {
-        ArrayList<String> rooms;
-        try
-        {
-            WebTarget target = ClientBuilder.newClient().target(DataConstants.ROOM_LIST_ENDPOINT);
-            Response response = getResponse(target, "");
-            String stringJson = response.readEntity(String.class);
-            response.close();
-            JsonElement elem = new JsonParser().parse(stringJson);
-            Gson gson  = new GsonBuilder().create();
-            rooms = gson.fromJson(elem, ArrayList.class);
-            return rooms;
-        }
-        catch (Exception exception)
-        {
-            Log.w("O kurwa wyjątek xD: ", exception);
-        }
-        return null;
-    }
-
-    private void setRoomSpinner(Integer numOfRooms)
-    {
-        Spinner roomSpinner = findViewById(R.id.roomID_spinner);
-        ArrayList<String> roomNames = new ArrayList<>();
-        for(Integer iterator =0; iterator < numOfRooms; ++iterator)
-        {
-            roomNames.add("ROOM" + (iterator +1));
-        }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, roomNames);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        roomSpinner.setAdapter(dataAdapter);
-    }
 }
