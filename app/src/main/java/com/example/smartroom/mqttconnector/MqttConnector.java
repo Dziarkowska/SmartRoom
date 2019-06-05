@@ -14,10 +14,11 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.util.Random;
 
-class MqttConnector implements MqttCallbackExtended {
+public class MqttConnector implements MqttCallbackExtended {
     private static MqttConnector ourInstance = null;
     private final MqttAndroidClient mqttAndroidClient;
-    private final String LOG_TAG = "MqttConnector";
+    private static final String LOG_TAG = "MqttConnector";
+    private static final int QoS = 1;
     private BodyReader bodyReader = new BodyReader();
     private MqttConnectorEventsListener listener;
 
@@ -34,7 +35,7 @@ class MqttConnector implements MqttCallbackExtended {
         void onMessageReceived(DataBlock dataBlock);
     }
 
-    static MqttConnector getInstance(Context ctx, MqttConnectorEventsListener listener) {
+    public static MqttConnector getInstance(Context ctx, MqttConnectorEventsListener listener) {
 
         if (ourInstance == null)
             ourInstance = new MqttConnector(ctx, listener);
@@ -57,6 +58,7 @@ class MqttConnector implements MqttCallbackExtended {
 
         try {
             mqttAndroidClient.connect(options);
+            Log.i(LOG_TAG, "Start connecting");
         } catch (MqttException e) {
             this.listener.onConnectionError();
             Log.e(LOG_TAG, "Cannot connect: " + e.getMessage());
@@ -69,7 +71,7 @@ class MqttConnector implements MqttCallbackExtended {
         listener.onConnected();
         Log.i(LOG_TAG, "Mqtt connected successfully");
         try {
-            mqttAndroidClient.subscribe(ConnectionMqttDictionary.IN_CONN_TOPIC, 1);
+            mqttAndroidClient.subscribe(ConnectionMqttDictionary.IN_CONN_TOPIC, QoS);
             listener.onSubscribed();
             Log.i(LOG_TAG, "Subscribe successfully");
         }catch (MqttException e){
@@ -111,7 +113,7 @@ class MqttConnector implements MqttCallbackExtended {
 
     private void sendMessage(String topic, String message) {
         MqttMessage mqttMessage = new MqttMessage(message.getBytes());
-        mqttMessage.setQos(1);
+        mqttMessage.setQos(QoS);
         try {
             mqttAndroidClient.publish(topic, mqttMessage);
         } catch (MqttException e) {
