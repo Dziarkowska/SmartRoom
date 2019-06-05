@@ -10,6 +10,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -86,6 +87,11 @@ public class RoomKeyActivity extends AppCompatActivity {
                 openGuestScreenActivity(convertJsonToDataBlock(response));
                 response.close();
             }
+            else{
+
+                incorrectLoginMessage();
+
+            }
         }
         catch (Exception exception)
         {
@@ -123,5 +129,13 @@ public class RoomKeyActivity extends AppCompatActivity {
             return new DataBlock();
         }
         return dataBlock;
+    }
+
+    private void incorrectLoginMessage(){
+
+        Toast.makeText(getBaseContext(),"Incorrect login or password, try again!", Toast.LENGTH_LONG).show();
+        EditText room_password = findViewById(R.id.room_pswd);
+        room_password.setText("");
+
     }
 }
