@@ -37,7 +37,7 @@
             android:id="@+id/roomID_spinner"
             android:layout_width="240dp"
             android:layout_height="40dp"
-            android:layout_above="@+id/go_btn"
+            android:layout_above="@+id/set_room_password_txt"
             android:layout_centerInParent="true"
             android:layout_marginBottom="10dp"
             android:dropDownWidth="match_parent"
@@ -64,6 +64,15 @@
             android:layout_marginBottom="10dp"
             android:text="Select RoomID" />
 
+        <EditText
+            android:id="@+id/set_room_password_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_above="@+id/go_btn"
+            android:layout_margin="10dp"
+            android:text="Set room password"
+            android:textColor="@android:color/background_dark"/>
 
     </RelativeLayout>
 

@@ -27,7 +27,6 @@ public class MainScreenActivity extends AppCompatActivity {
         smog_btn = findViewById(R.id.smog_btn);
         people_num_btn = findViewById(R.id.people_num_btn);
         weather_btn = findViewById(R.id.weather_btn);
-        menu_btn = findViewById(R.id.menu_btn);
         settings_btn = findViewById(R.id.settings_btn);
 
         vote_btn.getBackground().setAlpha(128);
@@ -48,7 +47,7 @@ public class MainScreenActivity extends AppCompatActivity {
         vote_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openVoteActivity();
+                //openVoteActivity();
             }
         });
 

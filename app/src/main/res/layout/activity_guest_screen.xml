@@ -15,15 +15,7 @@
         android:background="@drawable/login_background">
 
 
-        <Button
-            android:id="@+id/menu_ic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableBottom="@drawable/ic_menu"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:background="@android:color/transparent"/>
+
 
         <TextView
             android:id="@+id/appi_name_txt"
@@ -107,11 +99,11 @@
 
 
                     <Button
-                        android:id="@+id/AC_btn"
+                        android:id="@+id/weather_btn"
                         android:layout_width="0dp"
                         android:layout_height="200dp"
                         android:layout_weight="1"
-                        android:text="AC on/off"
+                        android:text="air qua in xD"
                         android:background="@drawable/roundedline_btn"/>
 
                     <Button
@@ -120,7 +112,7 @@
                         android:layout_height="200dp"
                         android:layout_weight="1"
                         android:background="@drawable/roundedline_btn"
-                        android:text="pollution level"/>
+                        android:text="pollution level out"/>
 
                 </TableRow>
 
@@ -139,12 +131,12 @@
                         android:background="@drawable/roundedline_btn"/>
 
                     <Button
-                        android:id="@+id/weather_btn"
+                        android:id="@+id/AC_btn"
                         android:layout_width="0dp"
                         android:layout_height="200dp"
                         android:layout_weight="1"
                         android:background="@drawable/roundedline_btn"
-                        android:text="sunny"/>
+                        android:text="Ac on/off"/>
 
                 </TableRow>
 
