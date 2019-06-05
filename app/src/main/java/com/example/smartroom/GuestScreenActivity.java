@@ -55,7 +55,7 @@ public class GuestScreenActivity extends AppCompatActivity {
         temp_in_btn.setText("TEMPERATURE INSIDE:\n" + String.format("%.2f",Double.valueOf(data.getTempIn())) + " °C");
         temp_out_btn.setText("TEMPERATURE OUTSIDE:\n" + String.format("%.2f",Double.valueOf(data.getTempOut())) + " °C");
         AC_btn.setText("AC LEVEL:\n" + data.getClimeOn());
-        weather_btn.setText("POLLUTION LEVEL INSIDE:\n" + String.format("%.2f",Double.valueOf(data.getAirQuaIn()) * 100) + " %");
-        smog_btn.setText("POLLUTION LEVEL OUTSIDE:\n" + String.format("%.2f",Double.valueOf(data.getAirQuaOut()) * 100) + " %");
+        weather_btn.setText("POLLUTION LVL INSIDE:\n" + String.format("%.2f",Double.valueOf(data.getAirQuaIn()) * 100) + " %");
+        smog_btn.setText("POLLUTION LVL OUTSIDE:\n" + String.format("%.2f",Double.valueOf(data.getAirQuaOut()) * 100) + " %");
     }
 }

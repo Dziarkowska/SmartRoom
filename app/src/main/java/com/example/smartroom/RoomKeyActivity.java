@@ -19,6 +19,8 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -67,6 +69,7 @@ public class RoomKeyActivity extends AppCompatActivity {
 
     private void onRoomLoginAttempt()
     {
+        getRoomList();
         EditText passwordEt = findViewById(R.id.room_pswd);
         String password = passwordEt.getEditableText().toString();
 
@@ -112,6 +115,27 @@ public class RoomKeyActivity extends AppCompatActivity {
         Future<Response> response = webTarget.request().async().post(Entity.json(jsonString));
         return response.get();
     }
+
+    private ArrayList<String> getRoomList()
+    {
+        ArrayList<String> rooms;
+        try
+        {
+            WebTarget target = ClientBuilder.newClient().target(DataConstants.ROOM_LIST_ENDPOINT);
+            Response response = getResponse(target, "");
+            String stringJson = response.readEntity(String.class);
+            JsonElement elem = new JsonParser().parse(stringJson);
+            Gson gson  = new GsonBuilder().create();
+            rooms = gson.fromJson(elem, ArrayList.class);
+            return rooms;
+        }
+        catch (Exception exception)
+        {
+            Log.w("O kurwa wyjątek xD: ", exception);
+        }
+        return null;
+    }
+
     private DataBlock convertJsonToDataBlock(Response response)
     {
         DataBlock dataBlock;
