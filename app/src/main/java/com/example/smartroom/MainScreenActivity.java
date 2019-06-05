@@ -60,6 +60,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
     public void openSettingsActivity(){
         Intent intent = new Intent(this, SettingsActivity.class);
+        intent.putExtra("data", getIntent().getSerializableExtra("data"));
         startActivity(intent);
     }
 
