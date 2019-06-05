@@ -1,5 +1,6 @@
 package com.example.smartroom;
 
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -59,7 +60,9 @@ public class SettingsActivity extends AppCompatActivity {
         Switch AC_switch = findViewById(R.id.AC_switch);
         Switch windows_switch = findViewById(R.id.windows_switch);
 
-        seekbar.setProgress(Integer.valueOf(data.getLightIn())*100);
+        seekbar.setProgress(lightInProgress(data));
+        progress2_txt.setText("Brightness \n" + lightInProgress(data) + "%");
+
         set_temp_txt.setText(data.getTempIn());
         AC_switch.setChecked(isACon(data));
         windows_switch.setChecked(isWindowOpen(data));
@@ -74,7 +77,13 @@ public class SettingsActivity extends AppCompatActivity {
 
 
         return data.getWindowOpen().equals("1");
-        }
+    }
+
+    private int lightInProgress(DataBlock data){
+        Double progress__double_val = Double.valueOf(data.getLightIn())*100;
+        return progress__double_val.intValue();
+
+    }
 
 
 }
