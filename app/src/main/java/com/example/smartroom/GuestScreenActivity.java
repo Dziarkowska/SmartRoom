@@ -52,8 +52,10 @@ public class GuestScreenActivity extends AppCompatActivity {
         DataBlock data = (DataBlock) getIntent().getSerializableExtra("data");
 
         people_num_btn.setText("PEOPLE INSIDE:\n" + data.getPeopleInside());
-        temp_in_btn.setText("TEMPERATURE INSIDE:\n" + data.getTempIn());
-        temp_out_btn.setText("TEMPERATURE OUTSIDE:\n" + data.getTempOut());
-        AC_btn.setText("AC LEVEL:\n" + data.getClimeOn());  //pieknie
+        temp_in_btn.setText("TEMPERATURE INSIDE:\n" + String.format("%.2f",Double.valueOf(data.getTempIn())) + " °C");
+        temp_out_btn.setText("TEMPERATURE OUTSIDE:\n" + String.format("%.2f",Double.valueOf(data.getTempOut())) + " °C");
+        AC_btn.setText("AC LEVEL:\n" + data.getClimeOn());
+        weather_btn.setText("POLLUTION LEVEL INSIDE:\n" + String.format("%.2f",Double.valueOf(data.getAirQuaIn()) * 100) + " %");
+        smog_btn.setText("POLLUTION LEVEL OUTSIDE:\n" + String.format("%.2f",Double.valueOf(data.getAirQuaOut()) * 100) + " %");
     }
 }

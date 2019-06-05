@@ -16,8 +16,6 @@ public class MainScreenActivity extends AppCompatActivity {
     private TableRow tablerow_btn;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +29,6 @@ public class MainScreenActivity extends AppCompatActivity {
         weather_btn = findViewById(R.id.weather_btn);
         settings_btn = findViewById(R.id.settings_btn);
 
-
         vote_btn.getBackground().setAlpha(128);
         temp_in_btn.getBackground().setAlpha(20);
         temp_out_btn.getBackground().setAlpha(20);
@@ -40,6 +37,8 @@ public class MainScreenActivity extends AppCompatActivity {
         people_num_btn.getBackground().setAlpha(20);
         weather_btn.getBackground().setAlpha(20);
 
+        TextView admin_name_txt = findViewById(R.id.admin_name_txt);
+        admin_name_txt.setText((String) getIntent().getSerializableExtra("login"));
 
         settings_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,8 +53,6 @@ public class MainScreenActivity extends AppCompatActivity {
                 //openVoteActivity();
             }
         });
-
-
 
     }
 

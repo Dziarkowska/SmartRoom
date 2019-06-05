@@ -44,6 +44,7 @@ public class RoomKeyForAdmin extends AppCompatActivity {
     public void openMainScreenActivity(){
 
         Intent intent = new Intent(this, MainScreenActivity.class);
+        intent.putExtra("login", getIntent().getSerializableExtra("login"));
         startActivity(intent);
     }
 }

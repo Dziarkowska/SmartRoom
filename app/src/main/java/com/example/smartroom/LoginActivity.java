@@ -38,11 +38,10 @@ public class LoginActivity extends AppCompatActivity {
         button.getBackground().setAlpha(128);
     }
 
-
-
-    public void openRoomKeyForAdminActivity(){
+    public void openRoomKeyForAdminActivity(String login){
 
         Intent intent = new Intent( this, RoomKeyForAdmin.class);
+        intent.putExtra("login", login);
         startActivity(intent);
     }
 
@@ -62,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         {
             if(validateResponse(target, jsonString))
             {
-                openRoomKeyForAdminActivity();
+                openRoomKeyForAdminActivity(login);
             }
             else{
                 incorrectLoginMessage();
