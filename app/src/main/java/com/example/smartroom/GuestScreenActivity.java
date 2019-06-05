@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 
+
 public class GuestScreenActivity extends AppCompatActivity {
 
     private Button vote_btn, temp_in_btn, temp_out_btn, AC_btn, smog_btn, people_num_btn, weather_btn;
@@ -31,6 +32,7 @@ public class GuestScreenActivity extends AppCompatActivity {
         people_num_btn.getBackground().setAlpha(20);
         weather_btn.getBackground().setAlpha(20);
 
+        fillInitialValues();
 
         vote_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,5 +45,17 @@ public class GuestScreenActivity extends AppCompatActivity {
     public void openVoteActivity(){
         Intent intent = new Intent(this,VoteActivity.class);
         startActivity(intent);
+    }
+
+    private void fillInitialValues()
+    {
+        DataBlock data = (DataBlock) getIntent().getSerializableExtra("data");
+
+        people_num_btn.setText("PEOPLE INSIDE:\n" + data.getPeopleInside());
+        temp_in_btn.setText("TEMPERATURE INSIDE:\n" + String.format("%.2f",Double.valueOf(data.getTempIn())) + " °C");
+        temp_out_btn.setText("TEMPERATURE OUTSIDE:\n" + String.format("%.2f",Double.valueOf(data.getTempOut())) + " °C");
+        AC_btn.setText("AC LEVEL:\n" + data.getClimeOn());
+        weather_btn.setText("POLLUTION LVL INSIDE:\n" + String.format("%.2f",Double.valueOf(data.getAirQuaIn()) * 100) + " %");
+        smog_btn.setText("POLLUTION LVL OUTSIDE:\n" + String.format("%.2f",Double.valueOf(data.getAirQuaOut()) * 100) + " %");
     }
 }

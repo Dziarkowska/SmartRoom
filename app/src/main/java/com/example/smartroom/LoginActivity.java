@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -17,9 +18,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 public class LoginActivity extends AppCompatActivity {
-
-    private final String SERVER_URL = "http://ec2-35-156-20-198.eu-central-1.compute.amazonaws.com:6969/app-connection-core/loginuser";
-    private final Integer SUCCESSFUL_LOGIN = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,9 +38,10 @@ public class LoginActivity extends AppCompatActivity {
         button.getBackground().setAlpha(128);
     }
 
-    public void openMainScreenActivity()
-    {
-        Intent intent = new Intent(this, MainScreenActivity.class);
+    public void openRoomKeyForAdminActivity(String login){
+
+        Intent intent = new Intent( this, RoomKeyForAdmin.class);
+        intent.putExtra("login", login);
         startActivity(intent);
     }
 
@@ -56,13 +55,16 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordEt.getEditableText().toString();
 
         String jsonString = "{" + "\"user\": \"" + login + "\", \"password\": \"" + password + "\"}";
-        WebTarget target = ClientBuilder.newClient().target(SERVER_URL);
+        WebTarget target = ClientBuilder.newClient().target(DataConstants.ADMIN_LOGIN_ENDPOINT);
 
         try
         {
             if(validateResponse(target, jsonString))
             {
-                openMainScreenActivity();   //TODO: maybe choose room before?
+                openRoomKeyForAdminActivity(login);
+            }
+            else{
+                incorrectLoginMessage();
             }
         }
         catch (Exception exception)
@@ -75,10 +77,21 @@ public class LoginActivity extends AppCompatActivity {
         throws InterruptedException, ExecutionException
     {
         Future<Response> response = webTarget.request().async().post(Entity.json(jsonString));
-        Object status = response.get().getStatus();
+        Integer status = response.get().getStatus();
+        Log.w("########################################", response.get().toString());
         response.get().close();
         Log.d("Admin login status ", status.toString());
-        return status.equals(SUCCESSFUL_LOGIN);
+        return status.equals(DataConstants.SUCCESSFUL_LOGIN);
+    }
+
+    private void incorrectLoginMessage(){
+
+        Toast.makeText(getBaseContext(),"Incorrect login or password, try again!", Toast.LENGTH_LONG).show();
+        EditText login_txt = findViewById(R.id.login);
+        EditText password_txt = findViewById(R.id.password);
+
+        login_txt.setText("");
+        password_txt.setText("");
     }
 }
 
