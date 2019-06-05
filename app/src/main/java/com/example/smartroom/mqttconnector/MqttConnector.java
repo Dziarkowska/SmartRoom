@@ -11,6 +11,8 @@ import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Random;
 
@@ -21,6 +23,7 @@ public class MqttConnector implements MqttCallbackExtended {
     private static final int QoS = 1;
     private BodyReader bodyReader = new BodyReader();
     private MqttConnectorEventsListener listener;
+    private String currentlySubscribedRoom = "";
 
     public interface MqttConnectorEventsListener {
 
@@ -33,6 +36,9 @@ public class MqttConnector implements MqttCallbackExtended {
         void onDeliveryCompleted();
 
         void onMessageReceived(DataBlock dataBlock);
+
+        void onVotingStarts();
+        void onVotingEnds();
     }
 
     public static MqttConnector getInstance(Context ctx, MqttConnectorEventsListener listener) {
@@ -71,8 +77,9 @@ public class MqttConnector implements MqttCallbackExtended {
         listener.onConnected();
         Log.i(LOG_TAG, "Mqtt connected successfully");
         try {
-            mqttAndroidClient.subscribe(ConnectionMqttDictionary.IN_CONN_TOPIC, QoS);
-            listener.onSubscribed();
+            mqttAndroidClient.subscribe(ConnectionMqttDictionary.VOTING_TOPIC, QoS);
+            if (!currentlySubscribedRoom.equals(""))
+                subscribeToRoom(currentlySubscribedRoom);
             Log.i(LOG_TAG, "Subscribe successfully");
         }catch (MqttException e){
             listener.onSubscribingError();
@@ -89,10 +96,19 @@ public class MqttConnector implements MqttCallbackExtended {
     @Override
     public void messageArrived(String topic, MqttMessage message) {
         Log.i(LOG_TAG, "Message arrived");
-        try {
-            DataBlock dataBlock = bodyReader.convertJsonStringToDataBlock(message.toString());
 
-            listener.onMessageReceived(dataBlock);
+        String msg = message.toString();
+        try {
+
+            if (topic.equals(ConnectionMqttDictionary.VOTING_TOPIC)) {
+
+                if (msg.equals("START")) listener.onVotingStarts();
+                else if (msg.equals("STOP")) listener.onVotingEnds();
+            } else if (topic.equals(ConnectionMqttDictionary.ROOM_BASE_TOPIC + currentlySubscribedRoom)) {
+
+                DataBlock dataBlock = bodyReader.convertJsonStringToDataBlock(msg);
+                listener.onMessageReceived(dataBlock);
+            }
         }catch (Throwable exception){
             Log.e(LOG_TAG, "Error while receiving message: " + exception.getMessage());
             throw new RuntimeException(exception);
@@ -105,10 +121,76 @@ public class MqttConnector implements MqttCallbackExtended {
         Log.i(LOG_TAG, "Delivery completed");
     }
 
-    public void prepareData() {
+    public void subscribeToRoom(String roomId) {
 
-        // TODO uzupelnic odpowiednio payload
-        sendMessage(ConnectionMqttDictionary.PREPATE_DATA_TOPIC, "");
+        try {
+            mqttAndroidClient.subscribe(ConnectionMqttDictionary.ROOM_BASE_TOPIC + roomId, QoS);
+            currentlySubscribedRoom = roomId;
+            listener.onSubscribed();
+            Log.i(LOG_TAG, "Subscribe successfully");
+        }catch (MqttException e){
+            listener.onSubscribingError();
+            Log.e(LOG_TAG, "Cannot subscribe: " + e.getMessage());
+        }
+    }
+
+    public void unsubscribeRoom() throws MqttException {
+
+        mqttAndroidClient.unsubscribe(ConnectionMqttDictionary.ROOM_BASE_TOPIC + currentlySubscribedRoom);
+        currentlySubscribedRoom = "";
+    }
+
+    public void sendLightSettings(String lightLevel) {
+
+        sendLightSettings(currentlySubscribedRoom, lightLevel);
+    }
+
+    public void sendLightSettings(String roomId, String lightLevel) {
+
+        try {
+            JSONObject json = new JSONObject();
+            json.put("id", roomId);
+            json.put("light_in", lightLevel);
+            sendMessage(ConnectionMqttDictionary.LIGHT_MANAGEMENT_TOPIC, json.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendTemperatureSettings(boolean isClimeOn, boolean isWindowOpen, int temp) {
+
+        sendTemperatureSettings(currentlySubscribedRoom, isClimeOn, isWindowOpen, temp);
+    }
+
+    public void sendTemperatureSettings(String roomId, boolean isClimeOn, boolean isWindowOpen, int temp) {
+
+        try {
+            JSONObject json = new JSONObject();
+            json.put("id", roomId);
+            json.put("isClimeOn", Boolean.toString(isClimeOn));
+            json.put("isWindowOpen", Boolean.toString(isWindowOpen));
+            json.put("temp", temp);
+            sendMessage(ConnectionMqttDictionary.TEMPERATURE_MANAGEMENT_TOPIC, json.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendVote(String answer) {
+
+        sendVote(currentlySubscribedRoom, answer);
+    }
+
+    public void sendVote(String roomId, String answer) {
+
+        try {
+            JSONObject json = new JSONObject();
+            json.put("id", roomId);
+            json.put("value", answer);
+            sendMessage(ConnectionMqttDictionary.VOTING_MANAGEMENT_TOPIC, json.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void sendMessage(String topic, String message) {
