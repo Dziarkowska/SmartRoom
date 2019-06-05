@@ -30,11 +30,6 @@ import static java.lang.Math.toIntExact;
 
 public class RoomKeyActivity extends AppCompatActivity {
 
-    private AutoCompleteTextView roomID_list;   // what is this? //list of rooms to choose from, while logging in, recommended by MG
-    private final String[] rooms ={"123"};  //TODO: make sure to not exceed
-    private final String SERVER_URL = "http://ec2-35-156-20-198.eu-central-1.compute.amazonaws.com:6969/app-connection-core/loginrooom";
-    private final Integer SUCCESSFUL_LOGIN = 200;   //TODO: move repetitive constants to other file
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,11 +72,11 @@ public class RoomKeyActivity extends AppCompatActivity {
         Spinner roomSpinner = findViewById(R.id.roomID_spinner);
         Integer roomIndicator = toIntExact(roomSpinner.getSelectedItemId());
 
-        String jsonString = "{" + "\"idRoom\": \"" + rooms[roomIndicator] +
+        String jsonString = "{" + "\"idRoom\": \"" + DataConstants.ROOMS[roomIndicator] +
             "\", \"password\": \"" + password + "\"}";
 
         Log.w("json ", jsonString);
-        WebTarget target = ClientBuilder.newClient().target(SERVER_URL);
+        WebTarget target = ClientBuilder.newClient().target(DataConstants.ROOM_LOGIN_ENDPOINT);
 
         try
         {
@@ -102,7 +97,7 @@ public class RoomKeyActivity extends AppCompatActivity {
     {
         Integer status = response.getStatus();
         Log.d("Room login status ", status.toString());
-        return status.equals(SUCCESSFUL_LOGIN);
+        return status.equals(DataConstants.SUCCESSFUL_LOGIN);
     }
 
     private Response getResponse(WebTarget webTarget, String jsonString)

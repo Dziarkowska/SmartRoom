@@ -19,9 +19,6 @@ import javax.ws.rs.core.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private final String SERVER_URL = "http://ec2-35-156-20-198.eu-central-1.compute.amazonaws.com:6969/app-connection-core/loginuser";
-    private final Integer SUCCESSFUL_LOGIN = 200;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -59,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordEt.getEditableText().toString();
 
         String jsonString = "{" + "\"user\": \"" + login + "\", \"password\": \"" + password + "\"}";
-        WebTarget target = ClientBuilder.newClient().target(SERVER_URL);
+        WebTarget target = ClientBuilder.newClient().target(DataConstants.ADMIN_LOGIN_ENDPOINT);
 
         try
         {
@@ -85,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.w("########################################", response.get().toString());
         response.get().close();
         Log.d("Admin login status ", status.toString());
-        return status.equals(SUCCESSFUL_LOGIN);
+        return status.equals(DataConstants.SUCCESSFUL_LOGIN);
     }
 
     private void incorrectLoginMessage(){
