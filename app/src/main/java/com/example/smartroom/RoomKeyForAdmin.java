@@ -17,6 +17,7 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -35,7 +36,8 @@ public class RoomKeyForAdmin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_key_for_admin);
 
-        Spinner room_id_spinner = findViewById(R.id.roomID_spinner);
+        final ArrayList<String> roomIds = getRoomList();
+        setRoomSpinner(roomIds.size());
 
         Button go_btn = findViewById(R.id.go_btn);
         go_btn.getBackground().setAlpha(128);
@@ -43,19 +45,13 @@ public class RoomKeyForAdmin extends AppCompatActivity {
         go_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onAdminChooseRoomAttempt();
+                onAdminChooseRoomAttempt(roomIds);
             }
         });
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                RoomKeyForAdmin.this,
-                android.R.layout.simple_list_item_1,
-                getResources().getStringArray(R.array.RoomIDs));
-        adapter.setDropDownViewResource(R.layout.spinner_style);
-        room_id_spinner.setAdapter(adapter);
     }
 
-    private void onAdminChooseRoomAttempt()
+    private void onAdminChooseRoomAttempt(ArrayList<String> rooms)
     {
         EditText passwordEt = findViewById(R.id.new_room_password_txt);
         String password = passwordEt.getEditableText().toString();
@@ -63,7 +59,7 @@ public class RoomKeyForAdmin extends AppCompatActivity {
         Spinner roomSpinner = findViewById(R.id.roomID_spinner);
         Integer roomIndicator = toIntExact(roomSpinner.getSelectedItemId());
 
-        String jsonString = "{" + "\"idRoom\": \"" + DataConstants.ROOMS[roomIndicator] +
+        String jsonString = "{" + "\"idRoom\": \"" + rooms.get(roomIndicator) +
             "\", \"password\": \"" + password + "\"}";
 
         Log.w("json ", jsonString);
@@ -123,5 +119,39 @@ public class RoomKeyForAdmin extends AppCompatActivity {
             return new DataBlock();
         }
         return dataBlock;
+    }
+
+    private ArrayList<String> getRoomList()
+    {
+        ArrayList<String> rooms;
+        try
+        {
+            WebTarget target = ClientBuilder.newClient().target(DataConstants.ROOM_LIST_ENDPOINT);
+            Response response = getResponse(target, "");
+            String stringJson = response.readEntity(String.class);
+            response.close();
+            JsonElement elem = new JsonParser().parse(stringJson);
+            Gson gson  = new GsonBuilder().create();
+            rooms = gson.fromJson(elem, ArrayList.class);
+            return rooms;
+        }
+        catch (Exception exception)
+        {
+            Log.w("O kurwa wyjątek xD: ", exception);
+        }
+        return null;
+    }
+
+    private void setRoomSpinner(Integer numOfRooms)
+    {
+        Spinner roomSpinner = findViewById(R.id.roomID_spinner);
+        ArrayList<String> roomNames = new ArrayList<>();
+        for(Integer iterator =0; iterator < numOfRooms; ++iterator)
+        {
+            roomNames.add("ROOM" + (iterator +1));
+        }
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, roomNames);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        roomSpinner.setAdapter(dataAdapter);
     }
 }
