@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -40,9 +41,11 @@ public class LoginActivity extends AppCompatActivity {
         button.getBackground().setAlpha(128);
     }
 
-    public void openMainScreenActivity()
-    {
-        Intent intent = new Intent(this, MainScreenActivity.class);
+
+
+    public void openRoomKeyForAdminActivity(){
+
+        Intent intent = new Intent( this, RoomKeyForAdmin.class);
         startActivity(intent);
     }
 
@@ -62,7 +65,10 @@ public class LoginActivity extends AppCompatActivity {
         {
             if(validateResponse(target, jsonString))
             {
-                openMainScreenActivity();   //TODO: maybe choose room before?
+                openRoomKeyForAdminActivity();
+            }
+            else{
+                incorrectLoginMessage();
             }
         }
         catch (Exception exception)
@@ -80,6 +86,16 @@ public class LoginActivity extends AppCompatActivity {
         response.get().close();
         Log.d("Admin login status ", status.toString());
         return status.equals(SUCCESSFUL_LOGIN);
+    }
+
+    private void incorrectLoginMessage(){
+
+        Toast.makeText(getBaseContext(),"Incorrect login or password, try again!", Toast.LENGTH_LONG).show();
+        EditText login_txt = findViewById(R.id.login);
+        EditText password_txt = findViewById(R.id.password);
+
+        login_txt.setText("");
+        password_txt.setText("");
     }
 }
 

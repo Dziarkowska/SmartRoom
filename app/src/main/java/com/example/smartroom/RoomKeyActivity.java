@@ -1,9 +1,8 @@
 package com.example.smartroom;
 
-import static java.lang.Math.toIntExact;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -27,9 +26,11 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
+import static java.lang.Math.toIntExact;
+
 public class RoomKeyActivity extends AppCompatActivity {
 
-    private AutoCompleteTextView roomID_list;   // what is this?
+    private AutoCompleteTextView roomID_list;   // what is this? //list of rooms to choose from, while logging in, recommended by MG
     private final String[] rooms ={"123"};  //TODO: make sure to not exceed
     private final String SERVER_URL = "http://ec2-35-156-20-198.eu-central-1.compute.amazonaws.com:6969/app-connection-core/loginrooom";
     private final Integer SUCCESSFUL_LOGIN = 200;   //TODO: move repetitive constants to other file
