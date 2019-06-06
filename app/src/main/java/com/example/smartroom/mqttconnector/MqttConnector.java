@@ -41,16 +41,15 @@ public class MqttConnector implements MqttCallbackExtended {
         void onVotingEnds();
     }
 
-    public static MqttConnector getInstance(Context ctx, MqttConnectorEventsListener listener) {
+    public static MqttConnector getInstance(Context ctx) {
 
         if (ourInstance == null)
-            ourInstance = new MqttConnector(ctx, listener);
+            ourInstance = new MqttConnector(ctx);
 
         return ourInstance;
     }
 
-    private MqttConnector(Context ctx, MqttConnectorEventsListener listener) {
-        this.listener = listener;
+    private MqttConnector(Context ctx) {
 
         mqttAndroidClient = new MqttAndroidClient(ctx, ConnectionMqttDictionary.BROKER,
                 ConnectionMqttDictionary.CLIENT_ID + new Random().nextInt());
@@ -66,7 +65,7 @@ public class MqttConnector implements MqttCallbackExtended {
             mqttAndroidClient.connect(options);
             Log.i(LOG_TAG, "Start connecting");
         } catch (MqttException e) {
-            this.listener.onConnectionError();
+            if (listener != null) this.listener.onConnectionError();
             Log.e(LOG_TAG, "Cannot connect: " + e.getMessage());
         }
     }
@@ -74,7 +73,7 @@ public class MqttConnector implements MqttCallbackExtended {
     @Override
     public void connectComplete(boolean reconnect, String serverURI) {
 
-        listener.onConnected();
+        if (listener != null) listener.onConnected();
         Log.i(LOG_TAG, "Mqtt connected successfully");
         try {
             mqttAndroidClient.subscribe(ConnectionMqttDictionary.VOTING_TOPIC, QoS);
@@ -82,7 +81,7 @@ public class MqttConnector implements MqttCallbackExtended {
                 subscribeToRoom(currentlySubscribedRoom);
             Log.i(LOG_TAG, "Subscribe successfully");
         }catch (MqttException e){
-            listener.onSubscribingError();
+            if (listener != null) listener.onSubscribingError();
             Log.e(LOG_TAG, "Cannot subscribe: " + e.getMessage());
         }
     }
@@ -102,12 +101,16 @@ public class MqttConnector implements MqttCallbackExtended {
 
             if (topic.equals(ConnectionMqttDictionary.VOTING_TOPIC)) {
 
-                if (msg.equals("START")) listener.onVotingStarts();
-                else if (msg.equals("STOP")) listener.onVotingEnds();
+                if (msg.equals("START")) {
+                    if (listener != null) listener.onVotingStarts();
+                }
+                else if (msg.equals("STOP")) {
+                    if (listener != null) listener.onVotingEnds();
+                }
             } else if (topic.equals(ConnectionMqttDictionary.ROOM_BASE_TOPIC + currentlySubscribedRoom)) {
 
                 DataBlock dataBlock = bodyReader.convertJsonStringToDataBlock(msg);
-                listener.onMessageReceived(dataBlock);
+                if (listener != null) listener.onMessageReceived(dataBlock);
             }
         }catch (Throwable exception){
             Log.e(LOG_TAG, "Error while receiving message: " + exception.getMessage());
@@ -117,8 +120,13 @@ public class MqttConnector implements MqttCallbackExtended {
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
-        listener.onDeliveryCompleted();
+        if (listener != null) listener.onDeliveryCompleted();
         Log.i(LOG_TAG, "Delivery completed");
+    }
+
+    public void setEventsListener(MqttConnectorEventsListener listener) {
+
+        this.listener = listener;
     }
 
     public void subscribeToRoom(String roomId) {
@@ -126,10 +134,10 @@ public class MqttConnector implements MqttCallbackExtended {
         try {
             mqttAndroidClient.subscribe(ConnectionMqttDictionary.ROOM_BASE_TOPIC + roomId, QoS);
             currentlySubscribedRoom = roomId;
-            listener.onSubscribed();
+            if (listener != null) listener.onSubscribed();
             Log.i(LOG_TAG, "Subscribe successfully");
         }catch (MqttException e){
-            listener.onSubscribingError();
+            if (listener != null) listener.onSubscribingError();
             Log.e(LOG_TAG, "Cannot subscribe: " + e.getMessage());
         }
     }
@@ -199,7 +207,7 @@ public class MqttConnector implements MqttCallbackExtended {
         try {
             mqttAndroidClient.publish(topic, mqttMessage);
         } catch (MqttException e) {
-            listener.onSendingError();
+            if (listener != null) listener.onSendingError();
             Log.e(LOG_TAG, "Error while sending message: " + e.getMessage());
         }
     }
