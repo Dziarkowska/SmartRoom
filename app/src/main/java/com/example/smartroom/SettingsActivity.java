@@ -10,12 +10,16 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.smartroom.mqttconnector.MqttConnector;
+
 public class SettingsActivity extends AppCompatActivity {
 
     private Button save_changes_btn;
     private SeekBar seekbar;
     private TextView progress2_txt;
-
+    private Switch ac_switch;
+    private Switch window_switch;
+    private EditText temperature;
 
 
     @Override
@@ -26,6 +30,9 @@ public class SettingsActivity extends AppCompatActivity {
         save_changes_btn = findViewById(R.id.save_changes_btn);
         seekbar = findViewById(R.id.seek_bar2_brightness);
         progress2_txt = findViewById(R.id.progress2_txt);
+        ac_switch = findViewById(R.id.AC_switch);
+        window_switch = findViewById(R.id.windows_switch);
+        temperature = findViewById(R.id.set_temp_txt);
         save_changes_btn.getBackground().setAlpha(128);
         setDefaultSettingsValues(data);
 
@@ -49,6 +56,9 @@ public class SettingsActivity extends AppCompatActivity {
         save_changes_btn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MqttConnector connector = MqttConnector.getInstance(getApplicationContext());
+                connector.sendLightSettings("123", Double.toString(seekbar.getProgress()/100.0));
+                connector.sendTemperatureSettings("123", ac_switch.isChecked(), window_switch.isChecked(), Integer.valueOf(temperature.getText().toString()));
                 //TODO: Wyslanie zmian do serwera
             }
         });

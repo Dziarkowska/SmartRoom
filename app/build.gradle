@@ -44,7 +44,6 @@ dependencies {
     implementation 'javax.xml.bind:activation:1.0.2'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'org.apache:apache:21'
-
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 }

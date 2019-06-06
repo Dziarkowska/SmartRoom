@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.smartroom.mqttconnector.MqttConnector;
+
 public class FirstWindow extends AppCompatActivity {
 
     private Button button_adm, button_guest;
@@ -31,6 +33,7 @@ public class FirstWindow extends AppCompatActivity {
         });
         button_guest.getBackground().setAlpha(128);
         button_adm.getBackground().setAlpha(128);
+        MqttConnector.getInstance(getApplicationContext());
 
     }
 
