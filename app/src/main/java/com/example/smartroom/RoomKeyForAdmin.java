@@ -9,13 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-
 import java.util.ArrayList;
 
 import javax.ws.rs.client.ClientBuilder;
@@ -66,13 +59,13 @@ public class RoomKeyForAdmin extends AppCompatActivity {
             Response response = RoomKeyHelper.getResponse(target, jsonString);
             if(RoomKeyHelper.validateResponse(response))
             {
-                openMainScreenActivity(convertJsonToDataBlock(response));
+                openMainScreenActivity(RoomKeyHelper.convertJsonToDataBlock(response));
                 response.close();
             }
         }
         catch (Exception exception)
         {
-            Log.w("Exception ", exception);
+            Log.w("RoomKeyForAdmin ", exception);
         }
     }
 
@@ -84,23 +77,5 @@ public class RoomKeyForAdmin extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private DataBlock convertJsonToDataBlock(Response response)
-    {
-        DataBlock dataBlock;
-        try
-        {
-            String stringJson = response.readEntity(String.class);
-            Log.d("Received json ", stringJson);
-            JsonElement elem = new JsonParser().parse(stringJson);
-            Gson gson  = new GsonBuilder().create();
-            dataBlock = gson.fromJson(elem, DataBlock.class);
-        }
-        catch (JsonIOException | JsonSyntaxException exception)
-        {
-            Log.e("Exception ", exception.toString());
-            return new DataBlock();
-        }
-        return dataBlock;
-    }
 
 }

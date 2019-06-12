@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.SeekBar;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -16,8 +15,6 @@ public class MainScreenActivity extends AppCompatActivity {
 
 
     private Button vote_btn, temp_in_btn, temp_out_btn, AC_btn, smog_btn, people_num_btn, weather_btn, menu_btn, settings_btn;
-    private TableRow tablerow_btn;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -8,7 +8,9 @@ import android.widget.Spinner;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -66,5 +68,24 @@ public class RoomKeyHelper
         Integer status = response.getStatus();
         Log.d("Room login status ", status.toString());
         return status.equals(DataConstants.SUCCESSFUL_LOGIN);
+    }
+
+    public static DataBlock convertJsonToDataBlock(Response response)
+    {
+        DataBlock dataBlock;
+        try
+        {
+            String stringJson = response.readEntity(String.class);
+            Log.d("Received json ", stringJson);
+            JsonElement elem = new JsonParser().parse(stringJson);
+            Gson gson  = new GsonBuilder().create();
+            dataBlock = gson.fromJson(elem, DataBlock.class);
+        }
+        catch (JsonIOException | JsonSyntaxException exception)
+        {
+            Log.e("Exception ", exception.toString());
+            return new DataBlock();
+        }
+        return dataBlock;
     }
 }

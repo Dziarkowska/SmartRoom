@@ -10,13 +10,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-
 import java.util.ArrayList;
 
 import javax.ws.rs.client.ClientBuilder;
@@ -75,7 +68,7 @@ public class RoomKeyActivity extends AppCompatActivity {
             Response response = RoomKeyHelper.getResponse(target, jsonString);
             if(RoomKeyHelper.validateResponse(response))
             {
-                openGuestScreenActivity(convertJsonToDataBlock(response));
+                openGuestScreenActivity(RoomKeyHelper.convertJsonToDataBlock(response));
                 response.close();
             }
             else{
@@ -90,28 +83,9 @@ public class RoomKeyActivity extends AppCompatActivity {
         }
     }
 
-    private DataBlock convertJsonToDataBlock(Response response)
-    {
-        DataBlock dataBlock;
-        try
-        {
-            String stringJson = response.readEntity(String.class);
-            Log.d("Received json ", stringJson);
-            JsonElement elem = new JsonParser().parse(stringJson);
-            Gson gson  = new GsonBuilder().create();
-            dataBlock = gson.fromJson(elem, DataBlock.class);
-        }
-        catch (JsonIOException | JsonSyntaxException exception)
-        {
-            Log.e("Exception ", exception.toString());
-            return new DataBlock();
-        }
-        return dataBlock;
-    }
-
     private void incorrectLoginMessage(){
 
-        Toast.makeText(getBaseContext(),"Incorrect login or password, try again!", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(),"Incorrect password, try again!", Toast.LENGTH_LONG).show();
         EditText room_password = findViewById(R.id.room_pswd);
         room_password.setText("");
 

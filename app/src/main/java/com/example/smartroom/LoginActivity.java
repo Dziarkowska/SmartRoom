@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         catch (Exception exception)
         {
-            Log.w("O kurwa wyjątek xD: ", exception);
+            Log.w("LoginActivity ", exception);
         }
     }
 
@@ -83,7 +83,6 @@ public class LoginActivity extends AppCompatActivity {
     {
         Future<Response> response = webTarget.request().async().post(Entity.json(jsonString));
         Integer status = response.get().getStatus();
-        Log.w("########################################", response.get().toString());
         response.get().close();
         Log.d("Admin login status ", status.toString());
         return status.equals(DataConstants.SUCCESSFUL_LOGIN);
