@@ -79,7 +79,7 @@ public class MqttConnector implements MqttCallbackExtended {
             mqttAndroidClient.subscribe(ConnectionMqttDictionary.VOTING_TOPIC, QoS);
             if (!currentlySubscribedRoom.equals(""))
                 subscribeToRoom(currentlySubscribedRoom);
-            Log.i(LOG_TAG, "Subscribe successfully");
+            Log.i(LOG_TAG, "Subscribe successfully to  " + currentlySubscribedRoom);
         }catch (MqttException e){
             if (listener != null) listener.onSubscribingError();
             Log.e(LOG_TAG, "Cannot subscribe: " + e.getMessage());
@@ -94,7 +94,7 @@ public class MqttConnector implements MqttCallbackExtended {
 
     @Override
     public void messageArrived(String topic, MqttMessage message) {
-        Log.i(LOG_TAG, "Message arrived");
+        Log.i(LOG_TAG, "Message arrived to " + ConnectionMqttDictionary.ROOM_BASE_TOPIC + currentlySubscribedRoom );
 
         String msg = message.toString();
         try {
@@ -135,7 +135,7 @@ public class MqttConnector implements MqttCallbackExtended {
             mqttAndroidClient.subscribe(ConnectionMqttDictionary.ROOM_BASE_TOPIC + roomId, QoS);
             currentlySubscribedRoom = roomId;
             if (listener != null) listener.onSubscribed();
-            Log.i(LOG_TAG, "Subscribe successfully");
+            Log.i(LOG_TAG, "Subscribe successfully to " + currentlySubscribedRoom);
         }catch (MqttException e){
             if (listener != null) listener.onSubscribingError();
             Log.e(LOG_TAG, "Cannot subscribe: " + e.getMessage());
@@ -165,12 +165,12 @@ public class MqttConnector implements MqttCallbackExtended {
         }
     }
 
-    public void sendTemperatureSettings(boolean isClimeOn, boolean isWindowOpen, int temp) {
+    public void sendTemperatureSettings(boolean isClimeOn, boolean isWindowOpen, double temp) {
 
         sendTemperatureSettings(currentlySubscribedRoom, isClimeOn, isWindowOpen, temp);
     }
 
-    public void sendTemperatureSettings(String roomId, boolean isClimeOn, boolean isWindowOpen, int temp) {
+    public void sendTemperatureSettings(String roomId, boolean isClimeOn, boolean isWindowOpen, double temp) {
 
         try {
             JSONObject json = new JSONObject();

@@ -56,10 +56,11 @@ public class SettingsActivity extends AppCompatActivity {
         save_changes_btn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DataBlock data = (DataBlock) getIntent().getSerializableExtra("data");
+                //TODO add data validation
                 MqttConnector connector = MqttConnector.getInstance(getApplicationContext());
-                connector.sendLightSettings("123", Double.toString(seekbar.getProgress()/100.0));
-                connector.sendTemperatureSettings("123", ac_switch.isChecked(), window_switch.isChecked(), Integer.valueOf(temperature.getText().toString()));
-                //TODO: Wyslanie zmian do serwera
+                connector.sendLightSettings(data.getId(), Double.toString(seekbar.getProgress()/100.0));
+                connector.sendTemperatureSettings(data.getId(), ac_switch.isChecked(), window_switch.isChecked(), Double.valueOf(temperature.getText().toString()));
             }
         });
 

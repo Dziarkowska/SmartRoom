@@ -3,11 +3,14 @@ package com.example.smartroom;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.example.smartroom.mqttconnector.MqttConnector;
 
 public class MainScreenActivity extends AppCompatActivity {
 
@@ -40,7 +43,51 @@ public class MainScreenActivity extends AppCompatActivity {
         TextView admin_name_txt = findViewById(R.id.admin_name_txt);
         admin_name_txt.setText((String) getIntent().getSerializableExtra("login"));
 
-        fillInitialValues();
+        DataBlock data = (DataBlock) getIntent().getSerializableExtra("data");
+        fillMeasurementsValues(data);
+
+        MqttConnector connector = MqttConnector.getInstance(getApplicationContext());
+        MqttConnector.MqttConnectorEventsListener listener = new MqttConnector.MqttConnectorEventsListener() {
+            @Override
+            public void onConnectionError()
+            {}
+
+            @Override
+            public void onSubscribingError()
+            {}
+
+            @Override
+            public void onSendingError()
+            {}
+
+            @Override
+            public void onConnected()
+            {}
+
+            @Override
+            public void onSubscribed()
+            {}
+
+            @Override
+            public void onDeliveryCompleted()
+            {}
+
+            @Override
+            public void onMessageReceived(DataBlock dataBlock)
+            {
+                fillMeasurementsValues(dataBlock);
+            }
+
+            @Override
+            public void onVotingStarts()
+            {}
+
+            @Override
+            public void onVotingEnds()
+            {}
+        };
+        connector.setEventsListener(listener);
+        connector.subscribeToRoom(data.getId());
 
         settings_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +105,22 @@ public class MainScreenActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        MqttConnector connector = MqttConnector.getInstance(getApplicationContext());
+        try
+        {
+            connector.unsubscribeRoom();
+        }
+        catch(Exception e)
+        {
+            Log.e("MainScreenActivity", e.toString());
+        }
+
+    }
+
     public void openSettingsActivity(){
         Intent intent = new Intent(this, SettingsActivity.class);
         intent.putExtra("data", getIntent().getSerializableExtra("data"));
@@ -69,10 +132,8 @@ public class MainScreenActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void fillInitialValues()
+    private void fillMeasurementsValues(DataBlock data)
     {
-        DataBlock data = (DataBlock) getIntent().getSerializableExtra("data");
-
         people_num_btn.setText("PEOPLE INSIDE:\n" + data.getPeopleInside());
         temp_in_btn.setText("TEMPERATURE INSIDE:\n" + String.format("%.2f",Double.valueOf(data.getTempIn())) + " °C");
         temp_out_btn.setText("TEMPERATURE OUTSIDE:\n" + String.format("%.2f",Double.valueOf(data.getTempOut())) + " °C");
