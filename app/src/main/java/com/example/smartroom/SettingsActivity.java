@@ -3,12 +3,14 @@ package com.example.smartroom;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.smartroom.mqttconnector.MqttConnector;
 
@@ -57,10 +59,16 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DataBlock data = (DataBlock) getIntent().getSerializableExtra("data");
-                //TODO add data validation
-                MqttConnector connector = MqttConnector.getInstance(getApplicationContext());
-                connector.sendLightSettings(data.getId(), Double.toString(seekbar.getProgress()/100.0));
-                connector.sendTemperatureSettings(data.getId(), ac_switch.isChecked(), window_switch.isChecked(), Double.valueOf(temperature.getText().toString()));
+                boolean window = window_switch.isChecked();
+                boolean ac = ac_switch.isChecked();
+                double temp =  Double.valueOf(temperature.getText().toString());
+                if(validateInsertedData(temp, window, ac))
+                {
+                    MqttConnector connector = MqttConnector.getInstance(getApplicationContext());
+                    connector.sendLightSettings(data.getId(), Double.toString(seekbar.getProgress() / 100.0));
+                    connector.sendTemperatureSettings(data.getId(), ac, window, temp);
+                    finish();
+                }
             }
         });
 
@@ -94,6 +102,29 @@ public class SettingsActivity extends AppCompatActivity {
         Double progress__double_val = Double.valueOf(data.getLightIn())*100;
         return progress__double_val.intValue();
 
+    }
+
+    private boolean validateInsertedData(double temp, boolean window, boolean ac)
+    {
+        if(temp > 50)
+        {
+            Toast.makeText(getBaseContext(),"Too hot!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if(temp < 0)
+        {
+            Toast.makeText(getBaseContext(),"Too cold!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if(window && ac)
+        {
+            Toast.makeText(getBaseContext(),"Don't open window and enable AC!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 
 
