@@ -120,7 +120,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         if(window && ac)
         {
-            Toast.makeText(getBaseContext(),"Don't open window and enable AC!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(),"Don't open the window and enable AC!", Toast.LENGTH_SHORT).show();
             return false;
         }
 

@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -25,8 +28,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Button button = findViewById(R.id.login_btn);
+
+        final Button button = findViewById(R.id.login_btn);
         button.getBackground().setAlpha(128);
+
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -35,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
                 onAdminLoginAttempt();
             }
         });
-        button.getBackground().setAlpha(128);
+
     }
 
     public void openRoomKeyForAdminActivity(String login){
