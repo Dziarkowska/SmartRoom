@@ -11,7 +11,7 @@ class ConnectionMqttDictionary {
 
     static final String LIGHT_MANAGEMENT_TOPIC = "management/lightmanage";
     static final String TEMPERATURE_MANAGEMENT_TOPIC = "manage/temp";
-    static final String VOTING_MANAGEMENT_TOPIC = "manage/voting";
+    static final String VOTING_MANAGEMENT_TOPIC = "manage/voting/";
 
     static final String MQTT_USER = "usereitMqtt";
     static final String MQTT_PASSWORD = "usereitPass";

@@ -94,7 +94,7 @@ public class MqttConnector implements MqttCallbackExtended {
 
     @Override
     public void messageArrived(String topic, MqttMessage message) {
-        Log.i(LOG_TAG, "Message arrived to " + ConnectionMqttDictionary.ROOM_BASE_TOPIC + currentlySubscribedRoom );
+        Log.i(LOG_TAG, "Message arrived to " + ConnectionMqttDictionary.ROOM_BASE_TOPIC + currentlySubscribedRoom);
 
         String msg = message.toString();
         try {
@@ -195,10 +195,19 @@ public class MqttConnector implements MqttCallbackExtended {
             JSONObject json = new JSONObject();
             json.put("id", roomId);
             json.put("value", answer);
-            sendMessage(ConnectionMqttDictionary.VOTING_MANAGEMENT_TOPIC, json.toString());
+            sendMessage(ConnectionMqttDictionary.VOTING_MANAGEMENT_TOPIC + currentlySubscribedRoom, json.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void sendVoteEnable(String answer) {
+
+        sendVoteEnable(currentlySubscribedRoom, answer);
+    }
+
+    public void sendVoteEnable(String roomId, String answer) {
+        sendMessage(ConnectionMqttDictionary.VOTING_MANAGEMENT_TOPIC + roomId, answer);
     }
 
     private void sendMessage(String topic, String message) {

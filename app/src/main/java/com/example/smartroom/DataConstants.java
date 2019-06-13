@@ -13,4 +13,6 @@ public final class DataConstants
     public static final String COOLER = "down";
     public static final String WARMER = "up";
     public static final String NO_CHANGES= "ok";
+    public static final String VOTING_ENABLED = "true";
+    public static final String VOTING_DISABLED = "false";
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -14,7 +15,8 @@ import com.example.smartroom.mqttconnector.MqttConnector;
 public class MainScreenActivity extends AppCompatActivity {
 
 
-    private Button vote_btn, temp_in_btn, temp_out_btn, AC_btn, smog_btn, people_num_btn, weather_btn, menu_btn, settings_btn;
+    private Button temp_in_btn, temp_out_btn, AC_btn, smog_btn, people_num_btn, weather_btn, settings_btn;
+    private Switch vote_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +97,12 @@ public class MainScreenActivity extends AppCompatActivity {
 
         vote_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                //openVoteActivity();
+            public void onClick(View v)
+            {
+                MqttConnector.getInstance(getApplicationContext())
+                    .sendVoteEnable(vote_btn.isChecked() ?
+                                    DataConstants.VOTING_ENABLED :
+                                    DataConstants.VOTING_DISABLED);
             }
         });
 
