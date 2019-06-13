@@ -10,4 +10,7 @@ public final class DataConstants
     public static final String ADMIN_ROOM_PASSWORD_ENDPOINT = SERVER_URL + ":" + SERVER_PORT + "/app-connection-core/changepass";
     public static final String ROOM_LIST_ENDPOINT = SERVER_URL + ":" + SERVER_PORT + "/app-connection-core/getroomlist";
     public static final Integer SUCCESSFUL_LOGIN = 200;
+    public static final String COOLER = "down";
+    public static final String WARMER = "up";
+    public static final String NO_CHANGES= "ok";
 }

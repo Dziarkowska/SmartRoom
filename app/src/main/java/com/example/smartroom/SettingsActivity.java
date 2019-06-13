@@ -116,7 +116,7 @@ public class SettingsActivity extends AppCompatActivity {
             return false;
         }
 
-        if(window && ac)
+        if(window & ac)
         {
             Toast.makeText(getBaseContext(),"Don't open the window and enable AC!", Toast.LENGTH_SHORT).show();
             return false;

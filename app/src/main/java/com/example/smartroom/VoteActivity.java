@@ -1,5 +1,7 @@
 package com.example.smartroom;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +14,7 @@ import static android.view.Window.FEATURE_NO_TITLE;
 public class VoteActivity extends AppCompatActivity {
 
     private Button cooler_btn, warmer_btn, nochanges_btn;
+    static String vote = DataConstants.NO_CHANGES;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +33,10 @@ public class VoteActivity extends AppCompatActivity {
         cooler_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //tu pewnie bedzie jakies zliczanie glosow
+                Intent returnIntent = new Intent();
+                vote = DataConstants.COOLER;
+                returnIntent.putExtra("vote",vote);
+                setResult(Activity.RESULT_OK,returnIntent);
                 Toast.makeText(getBaseContext(),"Thanks for the vote!", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -39,7 +45,10 @@ public class VoteActivity extends AppCompatActivity {
         warmer_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //tu pewnie bedzie jakies zliczanie glosow
+                Intent returnIntent = new Intent();
+                vote = DataConstants.WARMER;
+                returnIntent.putExtra("vote",vote);
+                setResult(Activity.RESULT_OK,returnIntent);
                 Toast.makeText(getBaseContext(),"Thanks for the vote!", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -48,7 +57,10 @@ public class VoteActivity extends AppCompatActivity {
         nochanges_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //tu pewnie bedzie jakies zliczanie glosow
+                Intent returnIntent = new Intent();
+                vote = DataConstants.NO_CHANGES;
+                returnIntent.putExtra("vote",vote);
+                setResult(Activity.RESULT_OK,returnIntent);
                 Toast.makeText(getBaseContext(),"Thanks for the vote!", Toast.LENGTH_SHORT).show();
                 finish();
             }

@@ -14,6 +14,8 @@ public class GuestScreenActivity extends AppCompatActivity {
 
     private Button vote_btn, temp_in_btn, temp_out_btn, AC_btn, smog_btn, people_num_btn, weather_btn;
     static private boolean isVoteOn = true;
+    static private double tempDuringVoting;
+    static private String vote = DataConstants.NO_CHANGES;
 
 
     @Override
@@ -39,7 +41,7 @@ public class GuestScreenActivity extends AppCompatActivity {
         DataBlock data = (DataBlock) getIntent().getSerializableExtra("data");
         fillMeasurementsValues(data);
 
-        MqttConnector connector = MqttConnector.getInstance(getApplicationContext());
+        final MqttConnector connector = MqttConnector.getInstance(getApplicationContext());
         MqttConnector.MqttConnectorEventsListener listener = new MqttConnector.MqttConnectorEventsListener() {
             @Override
             public void onConnectionError()
@@ -76,6 +78,7 @@ public class GuestScreenActivity extends AppCompatActivity {
             {
                 isVoteOn = true;
                 vote_btn.setEnabled(isVoteOn);
+                validateTempChange();
             }
 
             @Override
@@ -83,6 +86,7 @@ public class GuestScreenActivity extends AppCompatActivity {
             {
                 isVoteOn = false;
                 vote_btn.setEnabled(isVoteOn);
+                connector.sendVote(vote);
             }
         };
         connector.setEventsListener(listener);
@@ -112,9 +116,16 @@ public class GuestScreenActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+       vote = data.getStringExtra("vote");
+       tempDuringVoting = Double.valueOf(temp_in_btn.getText().toString().replaceAll("TEMPERATURE INSIDE:", "").replaceAll(" °C", ""));
+    }
+
     public void openVoteActivity(){
         Intent intent = new Intent(this,VoteActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     private void fillMeasurementsValues(DataBlock data)
@@ -126,4 +137,25 @@ public class GuestScreenActivity extends AppCompatActivity {
         weather_btn.setText("AIR QUALITY INSIDE:\n" + String.format("%.2f",Double.valueOf(data.getAirQuaIn()) * 100) + " %");
         smog_btn.setText("AIR QUALITY OUTSIDE:\n" + String.format("%.2f",Double.valueOf(data.getAirQuaOut()) * 100) + " %");
     }
+
+    private void validateTempChange()
+    {
+        double newTemp = Double.valueOf(temp_in_btn.getText().toString()
+            .replaceAll("TEMPERATURE INSIDE:", "")
+            .replaceAll(" °C", ""));
+        double difference = newTemp - tempDuringVoting;
+
+        if(difference >= 1.0 && vote.equals(DataConstants.WARMER))
+        {
+            vote = DataConstants.NO_CHANGES;
+            return;
+        }
+
+        if(difference <= -1.0 && vote.equals(DataConstants.COOLER))
+        {
+            vote = DataConstants.NO_CHANGES;
+            return;
+        }
+    }
+
 }

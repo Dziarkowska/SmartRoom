@@ -20,7 +20,7 @@ public class MqttConnector implements MqttCallbackExtended {
     private static MqttConnector ourInstance = null;
     private final MqttAndroidClient mqttAndroidClient;
     private static final String LOG_TAG = "MqttConnector";
-    private static final int QoS = 1;
+    private static final int QoS = 2;
     private BodyReader bodyReader = new BodyReader();
     private MqttConnectorEventsListener listener;
     private String currentlySubscribedRoom = "";
